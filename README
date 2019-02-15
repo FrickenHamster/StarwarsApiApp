@@ -1,0 +1,16 @@
+# StarWars API and App
+
+# Installation
+navigate to api folder
+run `npm install`
+navigate to StarwarsApp folder
+run `npm install`
+
+
+#Running
+navigate to api folder
+run `node index.js`
+navigate to StarwarsApp folder
+run `react-native run-ios`
+
+

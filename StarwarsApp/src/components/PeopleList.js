@@ -8,29 +8,32 @@ import {
 	TouchableOpacity,
 	Image
 }  from 'react-native';
+import PersonDetail from './PersonDetail';
 
 
-const PeopleItem = ({person}) => {
+const PeopleItem = ({person, onPress}) => {
 	return (<View style={{borderBottomWidth: 1, width: "100%", height: 36}}>
-		<TouchableOpacity>
+		<TouchableOpacity onPress={() => onPress(person)}>
 		<Text>{person.name}</Text>
 		<Text>age: {person.age} gender: {person.gender}</Text>
 		</TouchableOpacity>
 	</View>);
-}
-
+};
 
 class PeopleList extends Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			data: []
+			data: [],
+			selectedPerson: null,
 		}
+		this.selectPerson = this.selectPerson.bind(this);
+		this.renderItem = this.renderItem.bind(this);
+
 	}
 
 	componentDidMount() {
-		console.log('here')
 		fetch('http://localhost:3000/api/people')
 			.then(resp => resp.json())
 			.then(json => {
@@ -41,9 +44,13 @@ class PeopleList extends Component {
 	}
 
 	renderItem({item}) {
-		return (<PeopleItem person={item}/>)
+		return (<PeopleItem person={item} onPress={this.selectPerson}/>)
 	}
 
+	selectPerson(person) {
+			this.setState({selectedPerson: person});
+
+	}
 
 	render() {
 		return (
@@ -51,7 +58,12 @@ class PeopleList extends Component {
 				<Text>Starwars People</Text>
 			<FlatList renderItem={this.renderItem}
 					  data={this.state.data}
+					  keyExtractor={(item => item.name)}
+					  style={{flex: 1}}
 			/>
+				<PersonDetail
+					person={this.state.selectedPerson}
+				/>
 			</View>
 		)
 	}

@@ -11,7 +11,7 @@ app.get('*', function (req, res) {
         .then(resp => resp.json())
         .then(json => res.json({
             ...json,
-            results: json.results.slice(0, 10);
+            results: json.results.slice(0, 5)
         }))
         .catch(err => res.json(err));
     //res.json({poop:true})
